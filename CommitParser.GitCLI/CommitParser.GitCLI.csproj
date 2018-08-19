@@ -55,6 +55,10 @@
       <Project>{d7ba9287-6d44-4234-8745-3f83a73d8928}</Project>
       <Name>CommitParser.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CommitViewer.Logger.Interfaces\CommitViewer.Logger.Interfaces.csproj">
+      <Project>{F18BC5CE-291C-4844-BAD5-D358518C4539}</Project>
+      <Name>CommitViewer.Logger.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommitViewer.Model\CommitViewer.Model.csproj">
       <Project>{0662CC3F-3549-4F81-A25B-91065088C891}</Project>
       <Name>CommitViewer.Model</Name>

@@ -4,12 +4,15 @@ using CommitViewer.Model.DTOs;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using CommitViewer.Logger.Interfaces;
 
 namespace CommitParser.GitCLI
 {
     public class CommitParser : ICommitParser
     {
         private readonly string newLineSeparator;
+
+        private ICommitViewerLog logger;
 
         private readonly ICommitIdParser commitIdParser;
 
@@ -23,13 +26,14 @@ namespace CommitParser.GitCLI
             ICommitAuthorParser commitAuthorParser,
             ICommitDateParser commitDateParser,
             ICommitMessageParser commitMessageParser,
-            string newLineSeparator = "\n")
+            ICommitViewerLog commitViewerLogger)
         {
             this.newLineSeparator = newLineSeparator;
             this.commitIdParser = commitIdParser;
             this.commitAuthorParser = commitAuthorParser;
             this.commitDateParser = commitDateParser;
             this.commitMessageParser = commitMessageParser;
+            this.logger = commitViewerLogger;
         }
 
         private CommitDTO Parse(IEnumerable<string> commitLines)
@@ -54,16 +58,15 @@ namespace CommitParser.GitCLI
                 }
                 else
                 {
-                    // TODO: add logging invalid commit
+                    logger.Error("Insufficient information for a commit: \n" + string.Join("\n", commitLines));
+                    return null;
                 }
             }
             catch (Exception exp)
             {
-                // TODO: add logging
+                logger.Error("Commit parsing exception while parsing: \n" + string.Join("\n", commitLines), exp);
                 return null;
             }
-
-            return null;
         }
 
         public IEnumerable<CommitDTO> Parse(string gitLog)
@@ -72,7 +75,7 @@ namespace CommitParser.GitCLI
 
             if (!string.IsNullOrWhiteSpace(gitLog))
             {
-                string[] lines = gitLog.Split(new string[] { this.newLineSeparator }, StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = gitLog.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
                 for (int i = 0; i < lines.Length;)
                 {
@@ -83,10 +86,6 @@ namespace CommitParser.GitCLI
                     if (parsedCommit != null)
                     {
                         commits.Add(parsedCommit);
-                    }
-                    else
-                    {
-                        // TODO: add logging
                     }
 
                     i += commitLines.Count();

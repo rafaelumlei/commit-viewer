@@ -1,6 +1,7 @@
 ﻿using CommitFetcher.Interfaces;
 using CommitFetcher.Interfaces.Exceptions;
 using CommitParser.Interfaces;
+using CommitViewer.Logger.Interfaces;
 using CommitViewer.Model.DTOs;
 using System;
 using System.Collections.Generic;
@@ -20,24 +21,15 @@ namespace CommitFetcher.GitCLI
 
         private readonly string gitPull = "cd {0} > NUL && git.exe pull --quiet {1} --depth={2} > NUL && git.exe --no-pager log --date=iso --skip={3} --max-count={4}";
 
-        private ICommitParser commitParser;
+        private readonly ICommitParser commitParser;
+
+        private readonly ICommitViewerLog logger;
 
         public GitCLICommitFetcher(ICommitParser commitParser,
-            string gitCloneCommand = "",
-            string gitPullCommand = ""
-            )
+            ICommitViewerLog commitViewerLog)
         {
-            if (!string.IsNullOrEmpty(gitCloneCommand))
-            {
-                this.gitClone = gitCloneCommand;
-            }
-
-            if (!string.IsNullOrEmpty(gitPullCommand))
-            {
-                this.gitPull = gitPullCommand;
-            }
-
             this.commitParser = commitParser;
+            this.logger = commitViewerLog;
         }
 
         private string GetProjectPath(string url)
@@ -59,9 +51,9 @@ namespace CommitFetcher.GitCLI
             procInfo.UseShellExecute = false;
             procInfo.CreateNoWindow = true;
             procInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            string path = System.Environment.GetEnvironmentVariable("path");
 
             // creating process and reading STDOUT
+            logger.Debug($"Starting new process to fetch commits with cmd: {cmd}");
             Process proc = new Process();
             proc.StartInfo = procInfo;
             proc.Start();
@@ -78,8 +70,13 @@ namespace CommitFetcher.GitCLI
 
                 if (!Directory.Exists(projectPath))
                 {
+                    logger.Debug($"Preparing to clone new project {url}");
                     Directory.CreateDirectory(projectPath);
                     gitPull = false;
+                }
+                else
+                {
+                    logger.Debug($"The project {url} was already cloned.");
                 }
 
                 // formating command with input parameters
@@ -90,7 +87,6 @@ namespace CommitFetcher.GitCLI
                     skipToken,
                     top);
 
-                
                 string gitLog = await this.ExecuteShellCommand(command);
 
                 // TODO: remove this HACK... the STDOUT must not contain the command that was executed
@@ -100,6 +96,7 @@ namespace CommitFetcher.GitCLI
             }
             catch (Exception exp)
             {
+                logger.Error($"Unexpected error while getting and parsing commits in {nameof(GitCLICommitFetcher)}", exp);
                 throw new CommitFetchingOperationAborted("Unexpected error while getting and parsing commits. Check inner exception.", exp);
             }
         }
