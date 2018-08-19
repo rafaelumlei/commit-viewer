@@ -11,9 +11,9 @@ namespace CommitParser.GitCLI
 {
     public class CommitAuthorParser : ICommitAuthorParser
     {
-        private static readonly Regex commitAuthorRegex = new Regex(@"^Author: (<name>.*) \<(<email>.*)\>$");
+        private static readonly Regex commitAuthorRegex = new Regex(@"^Author: (?<name>.*) \<(?<email>.*)\>$");
 
-        public (string, string) Parse(string line)
+        public (string name, string email) Parse(string line)
         {
             Match m = commitAuthorRegex.Match(line);
 

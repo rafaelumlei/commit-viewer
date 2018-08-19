@@ -10,16 +10,13 @@ using System.Threading.Tasks;
 
 namespace CommitParser.GitCLI
 {
-    class CommitDateParser : ICommitDateParser
+    public class CommitDateParser : ICommitDateParser
     {
 
-        private static readonly Regex commitDateRegex = new Regex(@"^Date:[ ]+(<date>.*)$");
+        private static readonly Regex commitDateRegex = new Regex(@"^Date:[ ]+(?<date>.*)$");
 
-        private readonly string dateFormat;
-
-        public CommitDateParser(string dateFormat = "ddd MMM dd h:mm:ss yyyy zzz")
+        public CommitDateParser()
         {
-            this.dateFormat = dateFormat;
         }
 
         public DateTimeOffset Parse(string line)
@@ -28,7 +25,7 @@ namespace CommitParser.GitCLI
 
             if (m.Success &&
                 !string.IsNullOrWhiteSpace(m.Groups["date"]?.Value) &&
-                DateTimeOffset.TryParseExact(m.Groups["date"]?.Value, this.dateFormat, CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal, out DateTimeOffset parsedDate))
+                DateTimeOffset.TryParse(m.Groups["date"]?.Value, out DateTimeOffset parsedDate))
                 return parsedDate;
             else
                 throw new InvalidTokenException(nameof(CommitDateParser), $"Invalid commit date input {line ?? "null"}");

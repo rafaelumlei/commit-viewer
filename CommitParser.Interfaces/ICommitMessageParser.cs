@@ -8,6 +8,6 @@ namespace CommitParser.Interfaces
 {
     public interface ICommitMessageParser
     {
-        string Parse(string[] line);
+        string Parse(IEnumerable<string> lines);
     }
 }

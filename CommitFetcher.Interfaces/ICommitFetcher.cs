@@ -8,6 +8,6 @@ namespace CommitFetcher.Interfaces
 {
     public interface ICommitFetcher<T>
     {
-        IEnumerable<T> GetCommits();
+        Task<IEnumerable<T>> GetCommits(string url, int skipToken = 0, int top = 10);
     }
 }

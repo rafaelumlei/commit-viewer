@@ -8,6 +8,6 @@ namespace CommitParser.Interfaces
 {
     public interface ICommitAuthorParser
     {
-        (string, string) Parse(string line);
+        (string name, string email) Parse(string line);
     }
 }

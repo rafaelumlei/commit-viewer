@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace CommitParser.GitCLI
 {
-    class CommitIdParser : ICommitIdParser
+    public class CommitIdParser : ICommitIdParser
     {
 
-        private static readonly Regex commitIdRegex = new Regex(@"^commit (<commitId>[^ ])+");
+        private static readonly Regex commitIdRegex = new Regex(@"^commit (?<commitId>[^ ]+)");
 
         public string Parse(string line)
         {
