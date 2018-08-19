@@ -26,8 +26,7 @@ namespace CommitParser.GitCLI
             ICommitAuthorParser commitAuthorParser,
             ICommitDateParser commitDateParser,
             ICommitMessageParser commitMessageParser,
-            ICommitViewerLog commitViewerLogger,
-            string newLineSeparator = "\n")
+            ICommitViewerLog commitViewerLogger)
         {
             this.newLineSeparator = newLineSeparator;
             this.commitIdParser = commitIdParser;
@@ -76,7 +75,7 @@ namespace CommitParser.GitCLI
 
             if (!string.IsNullOrWhiteSpace(gitLog))
             {
-                string[] lines = gitLog.Split(new string[] { this.newLineSeparator }, StringSplitOptions.RemoveEmptyEntries);
+                string[] lines = gitLog.Split(new string[] { "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
                 for (int i = 0; i < lines.Length;)
                 {

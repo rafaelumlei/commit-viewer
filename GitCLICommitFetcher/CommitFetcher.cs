@@ -26,21 +26,8 @@ namespace CommitFetcher.GitCLI
         private readonly ICommitViewerLog logger;
 
         public GitCLICommitFetcher(ICommitParser commitParser,
-            ICommitViewerLog commitViewerLog,
-            string gitCloneCommand = "",
-            string gitPullCommand = ""
-            )
+            ICommitViewerLog commitViewerLog)
         {
-            if (!string.IsNullOrEmpty(gitCloneCommand))
-            {
-                this.gitClone = gitCloneCommand;
-            }
-
-            if (!string.IsNullOrEmpty(gitPullCommand))
-            {
-                this.gitPull = gitPullCommand;
-            }
-
             this.commitParser = commitParser;
             this.logger = commitViewerLog;
         }
@@ -86,7 +73,7 @@ namespace CommitFetcher.GitCLI
                     logger.Debug($"Preparing to clone new project {url}");
                     Directory.CreateDirectory(projectPath);
                     gitPull = false;
-                } 
+                }
                 else
                 {
                     logger.Debug($"The project {url} was already cloned.");
@@ -99,7 +86,7 @@ namespace CommitFetcher.GitCLI
                     skipToken + top,
                     skipToken,
                     top);
-                
+
                 string gitLog = await this.ExecuteShellCommand(command);
 
                 // TODO: remove this HACK... the STDOUT must not contain the command that was executed

@@ -11,11 +11,13 @@ using Unity;
 using Unity.Injection;
 using Unity.Lifetime;
 using Unity.log4net;
+using CommandLine;
 
 namespace CommitViewer.Console
 {
     class Program
     {
+
         /// <summary>
         /// Setting up the IoC container 
         /// </summary>
@@ -28,6 +30,7 @@ namespace CommitViewer.Console
             container.AddNewExtension<Log4NetExtension>();
 
             // adding fetching and parsing related singletons
+            container.RegisterType<ICommitViewerLog, Log4NetWrapper>(new ContainerControlledLifetimeManager());
             container.RegisterType<ICommitFetcher<CommitDTO>, GitCLICommitFetcher>(new ContainerControlledLifetimeManager());
             container.RegisterType<ICommitParser, CommitParser.GitCLI.CommitParser>(new ContainerControlledLifetimeManager());
             container.RegisterType<ICommitIdParser, CommitIdParser>(new ContainerControlledLifetimeManager());
@@ -38,31 +41,29 @@ namespace CommitViewer.Console
             return container;
         }
 
+        public static void ConfigureLogging()
+        {
+            log4net.Config.XmlConfigurator.Configure();
+        }
+
         static void Main(string[] args)
         {
-            //Uri uri = new Uri("https://github.com/rafaelumlei/tsoa.git");
-            //string path = Regex.Replace(uri.PathAndQuery, ".git", "", RegexOptions.IgnoreCase);
-            //System.Console.WriteLine(Path.GetTempPath());
-            //string newpath = Path.GetTempPath() + path.Replace('/', '\\');
-            //System.Console.WriteLine(newpath);
-            //Directory.CreateDirectory(newpath);
-            //System.Console.ReadLine();
-            //CommitFetcher.GitCLI.CommitFetcher cf = new CommitFetcher.GitCLI.CommitFetcher(new CommitParser.GitCLI.CommitParser())
-            //var commitParser = new CommitParser.GitCLI.CommitParser(new CommitIdParser(), new CommitAuthorParser(), new CommitDateParser(), new CommitMessageParser());
-            //var commitFetcher = new GitCLICommitFetcher(commitParser);
-            //var total = commitFetcher.GetCommits("https://github.com/rafaelumlei/tsoa.git", 0, 10).Result;
-            //var total2 = commitFetcher.GetCommits("https://github.com/rafaelumlei/tsoa.git", 10, 10).Result;
+            ConfigureLogging();
 
             var container = SetupUnityContainer();
 
             var fetcher = container.Resolve<ICommitFetcher<CommitDTO>>();
 
-            var commits = fetcher.GetCommits("https://github.com/rafaelumlei/tsoa.git", 0, 10).Result;
+            Parser.Default.ParseArguments<ConsoleOptions>(args)
+                .WithParsed(o =>
+                {
+                    var commits = fetcher.GetCommits(o.Url, o.Skip, o.Top).Result;
 
-            foreach (var commit in commits)
-            {
-                System.Console.WriteLine($"{commit.Id} {commit.Message}");
-            }
+                    foreach (var commit in commits)
+                    {
+                        System.Console.WriteLine($"{commit.Id} {commit.Message}");
+                    }
+                }); 
 
             System.Console.ReadLine();
         }
