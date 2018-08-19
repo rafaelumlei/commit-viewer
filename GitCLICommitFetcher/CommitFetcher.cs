@@ -60,7 +60,7 @@ namespace CommitFetcher.GitCLI
             return await proc.StandardOutput.ReadToEndAsync();
         }
 
-        public async Task<IEnumerable<CommitDTO>> GetCommits(string url, int skipToken = 0, int top = 10)
+        public async Task<IEnumerable<CommitDTO>> GetCommits(string url, int page = 0, int per_page = 10)
         {
             try
             {
@@ -83,9 +83,9 @@ namespace CommitFetcher.GitCLI
                 string command = string.Format(gitPull ? this.gitPull : this.gitClone,
                     projectPath,
                     url,
-                    skipToken + top,
-                    skipToken,
-                    top);
+                    page * per_page + per_page,
+                    page * per_page,
+                    per_page);
 
                 string gitLog = await this.ExecuteShellCommand(command);
 
@@ -97,7 +97,7 @@ namespace CommitFetcher.GitCLI
             catch (Exception exp)
             {
                 logger.Error($"Unexpected error while getting and parsing commits in {nameof(GitCLICommitFetcher)}", exp);
-                throw new CommitFetchingOperationAborted("Unexpected error while getting and parsing commits. Check inner exception.", exp);
+                throw new CommitFetchingOperationException("Unexpected error while getting and parsing commits. Check inner exception.", exp);
             }
         }
     }

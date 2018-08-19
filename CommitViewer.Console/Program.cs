@@ -12,6 +12,7 @@ using Unity.Injection;
 using Unity.Lifetime;
 using Unity.log4net;
 using CommandLine;
+using CommitFetcher.Github;
 
 namespace CommitViewer.Console
 {
@@ -48,6 +49,9 @@ namespace CommitViewer.Console
 
         static void Main(string[] args)
         {
+            /*CommitFetcherGithub cf = new CommitFetcherGithub("https://api.github.com/", 3000, null);
+            var res = cf.GetCommits("https://github.com/rafaelumlei/tsoa.git").Result;*/
+
             ConfigureLogging();
 
             var container = SetupUnityContainer();

@@ -84,6 +84,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CommitFetcher.Github\CommitFetcher.Github.csproj">
+      <Project>{d5aa5dca-96ee-4eb9-b9f6-d2cdc30c5d29}</Project>
+      <Name>CommitFetcher.Github</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommitFetcher.Interfaces\CommitFetcher.Interfaces.csproj">
       <Project>{becb0c36-ab6d-4f55-9eba-0aa77ce01cf6}</Project>
       <Name>CommitFetcher.Interfaces</Name>

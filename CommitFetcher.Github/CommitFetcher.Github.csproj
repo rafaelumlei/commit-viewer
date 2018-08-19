@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BECB0C36-AB6D-4F55-9EBA-0AA77CE01CF6}</ProjectGuid>
+    <ProjectGuid>{D5AA5DCA-96EE-4EB9-B9F6-D2CDC30C5D29}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CommitFetcher.Interfaces</RootNamespace>
-    <AssemblyName>CommitFetcher.Interfaces</AssemblyName>
+    <RootNamespace>CommitFetcher.Github</RootNamespace>
+    <AssemblyName>CommitFetcher.Github</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,8 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,9 +46,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\CommitFetchingOperationException.cs" />
-    <Compile Include="ICommitFetcher.cs" />
+    <Compile Include="CommitFetcherGithub.cs" />
+    <Compile Include="CommitMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CommitFetcher.Interfaces\CommitFetcher.Interfaces.csproj">
+      <Project>{becb0c36-ab6d-4f55-9eba-0aa77ce01cf6}</Project>
+      <Name>CommitFetcher.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommitViewer.Logger.Interfaces\CommitViewer.Logger.Interfaces.csproj">
+      <Project>{F18BC5CE-291C-4844-BAD5-D358518C4539}</Project>
+      <Name>CommitViewer.Logger.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommitViewer.Model\CommitViewer.Model.csproj">
+      <Project>{0662CC3F-3549-4F81-A25B-91065088C891}</Project>
+      <Name>CommitViewer.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
