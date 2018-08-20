@@ -41,7 +41,7 @@ namespace CommitFetcher.Github
         {
             Uri uri = new Uri(url);
             string path = Regex.Replace(uri.PathAndQuery, ".git", "", RegexOptions.IgnoreCase);
-            var ownerAndRepo = path.Split(new char[] { '/' }).Skip(1).ToArray(); 
+            var ownerAndRepo = path.Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries).ToArray(); 
 
             if (ownerAndRepo.Length != 2)
             {
