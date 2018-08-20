@@ -15,12 +15,12 @@ These interfaces are then materialized by two diffent implementations:
   * CommitFetcher.GitCLI: ICommitFetcher implementation based on the command line;
   * CommitFetcher.Github: ICommitFetcher implementation based on the github REST API v3;
 
-* CommitParser.Interfaces: all interfaces and exception related with parsing git log STDOUT:
+* CommitParser.Interfaces: all interfaces and exceptions related with parsing git log STDOUT:
   * CommitParser.GitCLI: token (commit, author, etc.) and commmit parsing implementations;
 
 * CommitViewer.API: REST API implementation 
 * CommitViewer.Console: console implementation to browse commits;
-* CommitViewer.Logger.Interfaces: logger interface to be injected in the whole project to avoid direct references to external code in all projects: 
+* CommitViewer.Logger.Interfaces: logger interface to inject in the whole project to avoid direct references to external code in the other projects: 
   * CommitViewer.Logger: log4net wrapper;
 * CommitViewer.Model: all models and DTOs shared across projects;
 
@@ -62,3 +62,6 @@ curl -X GET --header 'Accept: application/json' '{HOST}/api/repositories/rafaelu
 
 ![ConsoleSample](https://github.com/rafaelumlei/commit-viewer/blob/master/assets/console_sample.PNG)
 
+## Logging 
+
+By default, the console logs are being written to **C:\Logs\commit-viewer\console.log** and the API logs to **C:\Logs\commit-viewer\api.log**. This may be changed in the respective **App.config** (Console) and **Web.config** (WebAPI) files.
