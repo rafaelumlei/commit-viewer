@@ -19,6 +19,7 @@ namespace CommitViewer.API.Controllers.WebAPI
 
         private readonly ICommitFetcher<CommitDTO> commitsFetcher;
 
+        // TODO: setup IoC Container and Polly Policies
         public CommitsController(/*/ICommitFetcher<CommitDTO> commitsFetcher,
             ICommitViewerLog commitViewerLog*/)
         {
