@@ -10,7 +10,6 @@ namespace CommitParser.GitCLI
 {
     public class CommitParser : ICommitParser
     {
-        private readonly string newLineSeparator;
 
         private ICommitViewerLog logger;
 
@@ -28,7 +27,6 @@ namespace CommitParser.GitCLI
             ICommitMessageParser commitMessageParser,
             ICommitViewerLog commitViewerLogger)
         {
-            this.newLineSeparator = newLineSeparator;
             this.commitIdParser = commitIdParser;
             this.commitAuthorParser = commitAuthorParser;
             this.commitDateParser = commitDateParser;
@@ -40,6 +38,9 @@ namespace CommitParser.GitCLI
         {
             try
             {
+                // TODO: this code should be refactored and replaced with womething like
+                // a visitor pattern for the parser. Additionally, it should not fail 
+                // when an unknown token occurs.
                 if (commitLines?.Count() > 3)
                 {
                     var commit = new CommitDTO()

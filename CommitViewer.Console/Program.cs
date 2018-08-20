@@ -61,7 +61,7 @@ namespace CommitViewer.Console
             Parser.Default.ParseArguments<ConsoleOptions>(args)
                 .WithParsed(o =>
                 {
-                    var commits = fetcher.GetCommits(o.Url, o.Skip, o.Top).Result;
+                    var commits = fetcher.GetCommits(o.Url, o.Page, o.PerPage).Result;
 
                     foreach (var commit in commits)
                     {

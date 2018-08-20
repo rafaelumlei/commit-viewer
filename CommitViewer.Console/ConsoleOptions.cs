@@ -14,9 +14,9 @@ namespace CommitViewer.Console
         public string Url { get; set; } = "https://github.com/rafaelumlei/tsoa.git";
 
         [Option("page", HelpText = "Commits page to get.", Required = false)]
-        public int Skip { get; set; } = 0;
+        public int Page { get; set; } = 0;
 
         [Option("per-page", HelpText = "Number of commits per page.", Required = false)]
-        public int Top { get; set; } = 10;
+        public int PerPage { get; set; } = 10;
     }
 }
