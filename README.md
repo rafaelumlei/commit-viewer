@@ -60,5 +60,5 @@ curl -X GET --header 'Accept: application/json' '{HOST}/api/repositories/rafaelu
 
 ```
 
-![ConsoleSample](https://github.com/rafaelumlei/commit-viewer/blob/master/assets/console.png)
+![ConsoleSample](https://github.com/rafaelumlei/commit-viewer/blob/master/assets/console_sample.PNG)
 
