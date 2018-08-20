@@ -132,7 +132,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Abstractions, Version=3.3.0.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
-      <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.Abstractions.dll</HintPath>
+      <HintPath>..\packages\Unity.Abstractions.3.3.0\lib\net45\Unity.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Configuration, Version=5.2.1.0, Culture=neutral, PublicKeyToken=6d32ff45e0ccc69f, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.Configuration.dll</HintPath>
@@ -145,6 +145,9 @@
     </Reference>
     <Reference Include="Unity.Interception.Configuration, Version=5.1.4.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.log4net, Version=1.0.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.log4net.1.0.1\lib\net45\Unity.log4net.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RegistrationByConvention, Version=2.1.5.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0, processorArchitecture=MSIL">
       <HintPath>..\packages\Unity.5.8.6\lib\net45\Unity.RegistrationByConvention.dll</HintPath>
@@ -223,6 +226,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\WebAPI\CommitsController.cs" />
+    <Compile Include="DependencyResolver\UnityResolver.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -317,9 +321,21 @@
       <Project>{becb0c36-ab6d-4f55-9eba-0aa77ce01cf6}</Project>
       <Name>CommitFetcher.Interfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CommitParser.GitCLI\CommitParser.GitCLI.csproj">
+      <Project>{D19E1D45-961D-42A2-B7EA-12C50A4C1611}</Project>
+      <Name>CommitParser.GitCLI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommitParser.Interfaces\CommitParser.Interfaces.csproj">
+      <Project>{D7BA9287-6D44-4234-8745-3F83A73D8928}</Project>
+      <Name>CommitParser.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CommitViewer.Logger.Interfaces\CommitViewer.Logger.Interfaces.csproj">
       <Project>{F18BC5CE-291C-4844-BAD5-D358518C4539}</Project>
       <Name>CommitViewer.Logger.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CommitViewer.Logger\CommitViewer.Logger.csproj">
+      <Project>{C3A62763-F3C0-4CD4-A03A-3062DE804015}</Project>
+      <Name>CommitViewer.Logger</Name>
     </ProjectReference>
     <ProjectReference Include="..\CommitViewer.Model\CommitViewer.Model.csproj">
       <Project>{0662CC3F-3549-4F81-A25B-91065088C891}</Project>

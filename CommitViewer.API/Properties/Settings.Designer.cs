@@ -49,5 +49,23 @@ namespace CommitViewer.API.Properties {
                 return ((int)(this["APIOperationTimeoutSeconds"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public int MaxSequentialAPIOperationFailures {
+            get {
+                return ((int)(this["MaxSequentialAPIOperationFailures"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60")]
+        public int APICircuitBreakPeriodSeconds {
+            get {
+                return ((int)(this["APICircuitBreakPeriodSeconds"]));
+            }
+        }
     }
 }

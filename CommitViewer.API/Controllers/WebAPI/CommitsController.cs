@@ -33,8 +33,8 @@ namespace CommitViewer.API.Controllers.WebAPI
         /// <param name="baseResiliencePolicy"></param>
         public CommitsController(ICommitFetcher<CommitDTO> defaultCommitFetcher,
             ICommitFetcher<CommitDTO> fallbackCommitFetcher,
-            ICommitViewerLog commitViewerLog,
-            IAsyncPolicy baseResiliencePolicy)
+            IAsyncPolicy baseResiliencePolicy,
+            ICommitViewerLog commitViewerLog)
         {
             this.defaultCommitFetcher = defaultCommitFetcher;
             this.fallbackCommitFetcher = fallbackCommitFetcher;

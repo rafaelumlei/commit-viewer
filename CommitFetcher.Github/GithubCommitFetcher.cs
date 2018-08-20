@@ -16,13 +16,13 @@ using System.Threading.Tasks;
 
 namespace CommitFetcher.Github
 {
-    public class CommitFetcherGithub : ICommitFetcher<CommitDTO>
+    public class GithubCommitFetcher : ICommitFetcher<CommitDTO>
     {
         private readonly HttpClient githubClient;
 
         private readonly ICommitViewerLog logger;
 
-        public CommitFetcherGithub(string gitHubBaseEndpoint,
+        public GithubCommitFetcher(string gitHubBaseEndpoint,
             int timeoutMs,
             ICommitViewerLog logger)
         {
@@ -30,7 +30,7 @@ namespace CommitFetcher.Github
             this.githubClient.BaseAddress = new Uri(gitHubBaseEndpoint);
             this.githubClient.Timeout = TimeSpan.FromMilliseconds(timeoutMs);
             this.githubClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            this.githubClient.DefaultRequestHeaders.Add("User-Agent", $"{nameof(CommitFetcherGithub)}App");
+            this.githubClient.DefaultRequestHeaders.Add("User-Agent", $"{nameof(GithubCommitFetcher)}App");
             this.logger = logger;
             // to be able to perform https requests
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;

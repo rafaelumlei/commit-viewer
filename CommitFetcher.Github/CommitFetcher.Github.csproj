@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommitFetcherGithub.cs" />
+    <Compile Include="GithubCommitFetcher.cs" />
     <Compile Include="CommitMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
