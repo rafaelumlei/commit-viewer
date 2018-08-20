@@ -72,10 +72,6 @@ namespace CommitViewer.API.Controllers.WebAPI
             {
                 return Request.CreateResponse(HttpStatusCode.BadRequest, $"Invalid request, parameter {nameof(url)} was not provided.");
             }
-            else if (Uri.IsWellFormedUriString(url ?? string.Empty, UriKind.Absolute))
-            {
-                return Request.CreateResponse(HttpStatusCode.BadRequest, $"Github project {nameof(url)} is not a valid.");
-            }
 
             try
             {

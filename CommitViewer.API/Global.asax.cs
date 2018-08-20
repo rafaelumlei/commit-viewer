@@ -13,6 +13,9 @@ namespace CommitViewer.API
     {
         protected void Application_Start()
         {
+            // loading log configuration from XML
+            log4net.Config.XmlConfigurator.Configure();
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

@@ -34,7 +34,12 @@ namespace CommitViewer.API
 
             // adding the two resolve alternatives for ICommitFetcher
             container.RegisterType<ICommitFetcher<CommitDTO>, GitCLICommitFetcher>("console", new ContainerControlledLifetimeManager());
-            container.RegisterType<ICommitFetcher<CommitDTO>, GithubCommitFetcher>("http", new ContainerControlledLifetimeManager());
+            container.RegisterType<ICommitFetcher<CommitDTO>, GithubCommitFetcher>("http", 
+                    new ContainerControlledLifetimeManager(), 
+                    new InjectionConstructor(
+                        new InjectionParameter(Properties.Settings.Default.GithubAPIEndpoint),
+                        new InjectionParameter(Properties.Settings.Default.GithubAPIRequestTimeoutMs),
+                        new ResolvedParameter<ICommitViewerLog>()));
 
             // adding fetching and parsing related singletons
             container.RegisterType<ICommitParser, CommitParser.GitCLI.CommitParser>(new ContainerControlledLifetimeManager());
@@ -44,7 +49,7 @@ namespace CommitViewer.API
             container.RegisterType<ICommitMessageParser, CommitMessageParser>(new ContainerControlledLifetimeManager());
 
             // giving a new policy per controller instance
-            container.RegisterType<IAsyncResult>(new InjectionFactory((c) =>
+            container.RegisterType<IAsyncPolicy>(new InjectionFactory((c) =>
             {
                 var logger = container.Resolve<ICommitViewerLog>();
                 var timeout = Policy.TimeoutAsync(Settings.Default.APIOperationTimeoutSeconds);
@@ -71,11 +76,12 @@ namespace CommitViewer.API
                 return circuitBreaker.WrapAsync(timeout);
             }));
 
-            container.RegisterType<CommitsController>(new ContainerControlledLifetimeManager(),
+            var commitsPolicy = container.Resolve<IAsyncPolicy>();
+            container.RegisterType<CommitsController>(new PerResolveLifetimeManager(),
                 new InjectionConstructor(
                         new ResolvedParameter<ICommitFetcher<CommitDTO>>("http"),
                         new ResolvedParameter<ICommitFetcher<CommitDTO>>("console"),
-                        new ResolvedParameter<IAsyncPolicy>(),
+                        new InjectionParameter(commitsPolicy),
                         new ResolvedParameter<ICommitViewerLog>()));
 
             config.DependencyResolver = new UnityResolver(container);
