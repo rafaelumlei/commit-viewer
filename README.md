@@ -23,3 +23,42 @@ These interfaces are then materialized by two diffent implementations:
 * CommitViewer.Logger.Interfaces: logger interface to be injected in the whole project to avoid direct references to external code in all projects: 
   * CommitViewer.Logger: log4net wrapper;
 * CommitViewer.Model: all models and DTOs shared across projects;
+
+
+## How to run 
+
+A Visual Studio 2017 is required develop and execute this solution. 
+
+After cloning this project and opening this solution in the VS 2017:
+
+*  RIGHT click the  **CommitViewer.API** project and then click Debug -> Start new instance to execute the **REST API**. 
+A browser will open with the help page, open **{HOST}/swagger** to load the swagger WEB UI and test the API.
+
+
+*  RIGHT click the  **CommitViewer.Console** project and then click Debug -> Start new instance to execute the **Console**. 
+
+## Examples of usage
+
+### REST API
+
+```
+
+curl -X GET --header 'Accept: application/json' '{HOST}/api/commits?url=https%3A%2F%2Fgithub.com%2Frafaelumlei%2Ftsoa.git&page=1&per_page=10'
+
+curl -X GET --header 'Accept: application/json' '{HOST}/api/repositories/rafaelumlei/tsoa/commits?page=1&per_page=10'
+
+```
+
+![SwaggerAPIs](https://github.com/rafaelumlei/commit-viewer/blob/master/assets/swagger.png)
+
+![SwaggerSample](https://github.com/rafaelumlei/commit-viewer/blob/master/assets/swagger_sample.png)
+
+### Console 
+```
+
+.\CommitViewer.Console.exe --url https://github.com/angular/material2.git --page 2 --per-page 100
+
+```
+
+![ConsoleSample](https://github.com/rafaelumlei/commit-viewer/blob/master/assets/console.png)
+
