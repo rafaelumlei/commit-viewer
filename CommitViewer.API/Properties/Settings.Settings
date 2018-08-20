@@ -8,5 +8,8 @@
     <Setting Name="GithubAPIEndpoint" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://api.github.com/</Value>
     </Setting>
+    <Setting Name="APIOperationTimeoutSeconds" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

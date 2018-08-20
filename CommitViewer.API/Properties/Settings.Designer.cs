@@ -40,5 +40,14 @@ namespace CommitViewer.API.Properties {
                 return ((string)(this["GithubAPIEndpoint"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
+        public int APIOperationTimeoutSeconds {
+            get {
+                return ((int)(this["APIOperationTimeoutSeconds"]));
+            }
+        }
     }
 }

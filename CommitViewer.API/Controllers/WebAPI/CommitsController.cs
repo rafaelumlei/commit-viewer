@@ -1,9 +1,9 @@
 ﻿using CommitFetcher.Interfaces;
 using CommitViewer.Logger.Interfaces;
 using CommitViewer.Model.DTOs;
+using Polly;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -17,14 +17,50 @@ namespace CommitViewer.API.Controllers.WebAPI
     {
         private readonly ICommitViewerLog commitViewerLog;
 
-        private readonly ICommitFetcher<CommitDTO> commitsFetcher;
+        private readonly ICommitFetcher<CommitDTO> defaultCommitFetcher;
 
-        // TODO: setup IoC Container and Polly Policies
-        public CommitsController(/*/ICommitFetcher<CommitDTO> commitsFetcher,
-            ICommitViewerLog commitViewerLog*/)
+        private readonly ICommitFetcher<CommitDTO> fallbackCommitFetcher;
+
+        private readonly IAsyncPolicy baseResiliencePolicy;
+
+        /// <summary>
+        /// Constructor  with two injectable fetchers (default & fallback) and 
+        /// a baseline resilience policy (timeout & circuit breaker) 
+        /// </summary>
+        /// <param name="defaultCommitFetcher"></param>
+        /// <param name="fallbackCommitFetcher"></param>
+        /// <param name="commitViewerLog"></param>
+        /// <param name="baseResiliencePolicy"></param>
+        public CommitsController(ICommitFetcher<CommitDTO> defaultCommitFetcher,
+            ICommitFetcher<CommitDTO> fallbackCommitFetcher,
+            ICommitViewerLog commitViewerLog,
+            IAsyncPolicy baseResiliencePolicy)
         {
-            //this.commitsFetcher = commitsFetcher;
-            //this.commitViewerLog = commitViewerLog;
+            this.defaultCommitFetcher = defaultCommitFetcher;
+            this.fallbackCommitFetcher = fallbackCommitFetcher;
+            this.commitViewerLog = commitViewerLog;
+            this.baseResiliencePolicy = baseResiliencePolicy;
+        }
+
+
+        private async Task<IEnumerable<CommitDTO>> GetCommitsImpl(string url, int page = 0, int per_page = 10)
+        {
+            // first uses the default, if any exception arises, the circuit is open or
+            // timeout has been reached fallsback to the fallbackCommitFetcher
+            var fallback = Policy<IEnumerable<CommitDTO>>
+                .Handle<Exception>()
+                .FallbackAsync(async (ct) =>
+                {
+                    return await this.fallbackCommitFetcher.GetCommits(url, page, per_page);
+                });
+
+            var commits = await fallback.WrapAsync(this.baseResiliencePolicy)
+                .ExecuteAsync(async () =>
+                {
+                    return await this.defaultCommitFetcher.GetCommits(url, page, per_page);
+                });
+
+            return commits;
         }
 
         [HttpGet]
@@ -43,7 +79,7 @@ namespace CommitViewer.API.Controllers.WebAPI
 
             try
             {
-                return Request.CreateResponse(await this.commitsFetcher.GetCommits(url, page, per_page));
+                return Request.CreateResponse(await this.GetCommitsImpl(url, page, per_page));
             }
             catch (Exception exp)
             {
@@ -71,7 +107,7 @@ namespace CommitViewer.API.Controllers.WebAPI
 
             try
             {
-                return Request.CreateResponse(await this.commitsFetcher.GetCommits(url, page, per_page));
+                return Request.CreateResponse(await this.GetCommitsImpl(url, page, per_page));
             }
             catch (Exception exp)
             {
