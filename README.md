@@ -6,7 +6,7 @@ Two "commit fetchers" were implemented, one gets the commits using the github pu
 program in the commandline (git log).
 
 A resilience policy with (fallback -> circuit breaker -> timeout) was added, so that when exceptions/timeouts arise while
-communicating with the github through a fallback to the commandline implementation will occur.
+communicating with the github through API a fallback to the commandline implementation will occur.
 
 ## Project Structure
 
