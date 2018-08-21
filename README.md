@@ -32,9 +32,9 @@ A Visual Studio 2017 is required develop and publish the API and the Console app
 After cloning this project and opening this solution in the VS 2017:
 
 *  RIGHT click the  **CommitViewer.API** project and then click Debug -> Start new instance to execute the **REST API**. 
-A browser will open with the help page, open **{HOST}/swagger** to load the swagger WEB UI and test the API.
+A browser will open with the help page, navigate to **{HOST}/swagger** to load the swagger WEB UI and test the API. Alternatively, you may click Publish -> IIS or Azure to have the API deployed in a server.
 
-*  RIGHT click the  **CommitViewer.Console** project and then click Debug -> Start new instance to execute the **Console**. 
+*  RIGHT click the  **CommitViewer.Console** project and then click Debug -> Start new instance to execute the **Console**. Alternatively, you may click Publish -> To Folder and then install or execute the **Console** wherever you see fit.
 
 ## Examples of usage
 
