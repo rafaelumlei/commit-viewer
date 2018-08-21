@@ -27,13 +27,12 @@ These interfaces are then materialized by two diffent implementations:
 
 ## How to run 
 
-A Visual Studio 2017 is required develop and execute this solution. 
+A Visual Studio 2017 is required develop and publish the API and the Console app:
 
 After cloning this project and opening this solution in the VS 2017:
 
 *  RIGHT click the  **CommitViewer.API** project and then click Debug -> Start new instance to execute the **REST API**. 
 A browser will open with the help page, open **{HOST}/swagger** to load the swagger WEB UI and test the API.
-
 
 *  RIGHT click the  **CommitViewer.Console** project and then click Debug -> Start new instance to execute the **Console**. 
 
